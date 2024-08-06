@@ -1,0 +1,15 @@
+services:
+  employees-app:
+    image: horvathsanyi/employees:latest
+    volumes:
+      - jenkins-data:/var/jenkins_home
+
+  employees-newman:
+    volumes:
+      - jenkins-data:/var/jenkins_home
+    entrypoint: ["newman", "run", "employees.postman_collection.json", "-e", "test.postman_environment.json", "-r", "cli,htmlextra", "--reporter-htmlextra-export", "/var/jenkins_home/workspace/employees/employees-postman/reports"]
+
+volumes:
+  jenkins-data:
+    name: jenkins-data
+    external: true
